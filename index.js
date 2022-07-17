@@ -107,17 +107,19 @@ function addDepartment() {
   
 
   // prompt for name
-  prompt([
-
-  ])
-  //connection.query("INSERT INTO department SET ?", departmentName)
-  connection.query("INSERT INTO department SET ?", departmentName, (err, rows) => {
-    if(err) console.log(err)
-    console.table(rows)
-    promptMenu();
-  })
-}
-
+  inquirer.prompt([
+    {
+      type: 'input',
+      message: 'What is the name of the department?'
+    }
+  ]).then(
+    connection.query("INSERT INTO department SET ?", departmentName, (err, rows) => {
+      if(err) console.log(err)
+      console.table(rows)
+      promptMenu();
+    })
+  )};
+//connection.query("INSERT INTO department SET ?", departmentName)
 
 
 // asciText();
