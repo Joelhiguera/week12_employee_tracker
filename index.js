@@ -63,7 +63,7 @@ inquirer.prompt([
         case "View All Employees":
         viewAllEmployees()
         break;
-      case "Add a Department":
+      case "Add A Department":
         addDepartment()
         default: process.exit()
       
@@ -84,7 +84,7 @@ function viewDepartments() {
   })
 }
 
-//NEED TO FIX THE QUERY 
+
 function viewAllRoles() {
   const query = "SELECT * FROM role"
   connection.query(query, (err, rows) => {
@@ -104,24 +104,25 @@ function viewAllEmployees() {
   })
 }
 
-function addDepartment() {
-  const departmentName = null;
-  
-
-  // prompt for name
-  inquirer.prompt([
+function addDepartment () {
+  // const departmentName = null;
+ const departmentName = inquirer.prompt([
     {
       type: 'input',
-      message: 'What is the name of the department?'
+      message: 'What is the name of the department?',
+      name: 'department'
     }
   ])
-  .then(
-    connection.query("INSERT INTO department SET ?", departmentName, (err, rows) => {
-      if(err) console.log(err)
-      console.table(rows)
-      promptMenu();
-    })
-  )};
+  
+};
+
+// .then(
+  //   connection.query("INSERT INTO department SET ?", departmentName, (err, rows) => {
+  //     if(err) console.log(err)
+  //     console.table(rows)
+  //     promptMenu();
+  //   })
+  // )
 //connection.query("INSERT INTO department SET ?", departmentName)
 
 
