@@ -63,6 +63,8 @@ inquirer.prompt([
         case "View All Employees":
         viewAllEmployees()
         break;
+      case "Add a Department":
+        addDepartment()
         default: process.exit()
       
      }
@@ -112,7 +114,8 @@ function addDepartment() {
       type: 'input',
       message: 'What is the name of the department?'
     }
-  ]).then(
+  ])
+  .then(
     connection.query("INSERT INTO department SET ?", departmentName, (err, rows) => {
       if(err) console.log(err)
       console.table(rows)
