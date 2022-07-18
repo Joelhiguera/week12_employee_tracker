@@ -66,6 +66,9 @@ inquirer.prompt([
       case "Add A Department":
         addDepartment()
         break;
+      case "Add A Role":
+        addRole()
+        break;
         default: process.exit()
       
      }
@@ -124,17 +127,36 @@ function addDepartment () {
   
 };
 
-// .then(
-  //   connection.query("INSERT INTO department SET ?", departmentName, (err, rows) => {
-  //     if(err) console.log(err)
-  //     console.table(rows)
-  //     promptMenu();
-  //   })
-  // )
-//connection.query("INSERT INTO department SET ?", departmentName)
-
-
-// asciText();
+function addRole() {
+  inquirer.prompt([
+    {
+      type: 'input',
+      message: 'What is the name of the role?',
+      name: 'roleName'
+    },
+    {
+      type: 'input',
+      message: 'What is the salary of the role?',
+      name: 'salary'
+    },
+    {
+      type: 'list',
+      message: 'Which department does the role belong to?',
+      choices: [
+        'Sales',
+        'Accounting',
+        'Customer Service',
+        'Quality Assurance',
+        'Human Resources',
+        'Warehouse',
+        'Administration'
+      ]
+    },
+  ])
+  .then((answers) => {
+    
+  })
+}
 
 
 
