@@ -132,7 +132,7 @@ function addRole() {
     {
       type: 'input',
       message: 'What is the name of the role?',
-      name: 'roleName'
+      name: 'role'
     },
     {
       type: 'input',
@@ -142,6 +142,7 @@ function addRole() {
     {
       type: 'list',
       message: 'Which department does the role belong to?',
+      name: 'department',
       choices: [
         'Sales',
         'Accounting',
@@ -154,7 +155,9 @@ function addRole() {
     },
   ])
   .then((answers) => {
-    
+    console.log(answers.role);
+    console.log(answers.salary);
+    console.log(answers.department);
   })
 }
 
