@@ -117,11 +117,18 @@ function addDepartment () {
   ]).then((answers) => {
     const query = "INSERT INTO department (name) VALUES (?) ";
     const answer = answers.department;
+    const newQuery = 'SELECT * FROM department '
 
     connection.query(query, answer, (err, rows) => {
-      if(err) console.log(err)
-      console.table(rows)
-      promptMenu();
+      if(err){
+        console.log(err)
+      }else{
+        connection.query(newQuery, (err, rows) => {
+          if(err) console.log(err)
+          console.table(rows)
+          promptMenu();
+        })
+      }   
     })
   })
   
