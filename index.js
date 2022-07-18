@@ -105,14 +105,19 @@ function viewAllEmployees() {
 }
 
 function addDepartment () {
-  // const departmentName = null;
- const departmentName = inquirer.prompt([
+   inquirer.prompt([
     {
       type: 'input',
       message: 'What is the name of the department?',
       name: 'department'
     }
-  ])
+  ]).then((answers) => {
+    connection.query("INSERT INTO department SET ?", departmentName, (err, rows) => {
+      if(err) console.log(err)
+      console.table(rows)
+      promptMenu();
+    })
+  })
   
 };
 
