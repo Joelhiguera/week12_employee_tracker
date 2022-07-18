@@ -97,8 +97,6 @@ function viewAllRoles() {
 function viewAllEmployees() {
 
   const query = "SELECT * FROM employee INNER JOIN role ON employee.role_id=role.id"
-  
-  // "SELECT * FROM employee INNER JOIN role ON employee.role_id=role.id"
   connection.query(query, (err, rows) => {
     if(err) console.log(err)
     console.table(rows)
