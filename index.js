@@ -65,6 +65,7 @@ inquirer.prompt([
         break;
       case "Add A Department":
         addDepartment()
+        break;
         default: process.exit()
       
      }
@@ -112,15 +113,10 @@ function addDepartment () {
       name: 'department'
     }
   ]).then((answers) => {
-    connection.query("INSERT INTO department SET ?", departmentName, (err, rows) => {
-      if(err) console.log(err)
-      console.table(rows)
+      console.log("Hello World")
       promptMenu();
-    })
-  })
-  
-};
-
+    });
+  }
 // .then(
   //   connection.query("INSERT INTO department SET ?", departmentName, (err, rows) => {
   //     if(err) console.log(err)
