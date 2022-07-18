@@ -96,7 +96,6 @@ function viewAllRoles() {
 }
 
 function viewAllEmployees() {
-
   const query = "SELECT * FROM employee INNER JOIN role ON employee.role_id=role.id"
   connection.query(query, (err, rows) => {
     if(err) console.log(err)
@@ -113,10 +112,18 @@ function addDepartment () {
       name: 'department'
     }
   ]).then((answers) => {
-      console.log("Hello World")
+    const query = "INSERT INTO department (name) VALUES (?) ";
+    const answer = answers.department;
+
+    connection.query(query, answer, (err, rows) => {
+      if(err) console.log(err)
+      console.table(rows)
       promptMenu();
-    });
-  }
+    })
+  })
+  
+};
+
 // .then(
   //   connection.query("INSERT INTO department SET ?", departmentName, (err, rows) => {
   //     if(err) console.log(err)
