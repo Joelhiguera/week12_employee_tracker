@@ -158,6 +158,23 @@ function addRole() {
     console.log(answers.role);
     console.log(answers.salary);
     console.log(answers.department);
+    const queryTitle = 'INSERT INTO role (title) VALUES (?) ';
+    const querySalary = 'INSERT INTO role (salary) VALUES (?) ';
+    const queryDepartment = 'INSERT INTO role (manager_id) VALUES (?) ';
+    const queryEmployee = "SELECT * FROM employee INNER JOIN role ON employee.role_id=role.id";
+    if(!answers.role == null){
+      connection.query(queryTitle, answers.role)
+    }else console.log('Please enter in the name of the role!')
+     if(!answers.salary == null) {
+      connection.query(querySalary, answers.salary, (err, rows) => {
+        if(err) {
+          console.log(err)
+        }else if(answers.salar == null) {
+          console.log('Please enter')
+        }
+      })
+    }
+    promptMenu();
   })
 }
 
