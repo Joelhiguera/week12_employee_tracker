@@ -235,7 +235,7 @@ function addEmployee(){
     },
   ])
   .then((answers) => {
-    console.log(answers)
+   
     const queryEmployee = "INSERT INTO employee (first_name, last_name, role_id ) VALUES (?,?,?)"
 
     if(!answers.first_name) {
@@ -247,8 +247,8 @@ function addEmployee(){
       promptMenu();
 
     }
-    if(answers.first_name && answers.last_name && answers.role_id){
-      connection.query(queryEmployee, [answers.first_name, answers.last_name, 1], (err, rows) => {
+    if(answers.firstName && answers.lastName && answers.role){
+      connection.query(queryEmployee, [answers.firstName, answers.lastName, 1], (err, rows) => {
         connection.query(queryEmployee)
         
        
