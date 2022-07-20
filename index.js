@@ -2,7 +2,7 @@ const inquirer = require("inquirer");
 require('console.table');
 const mysql = require('mysql2');
 var figlet = require('figlet');
-const { listenerCount } = require("mysql2/typings/mysql/lib/Connection");
+
 
 
 
