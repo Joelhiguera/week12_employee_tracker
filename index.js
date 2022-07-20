@@ -72,6 +72,7 @@ inquirer.prompt([
       case "Add An Employee":
         addEmployee()
         break;
+      
         default: process.exit()
       
      }
@@ -138,65 +139,48 @@ function addDepartment () {
 };
 
 function addRole() {
-  inquirer.prompt([
-    {
-      type: 'input',
-      message: 'What is the name of the role?',
-      name: 'role'
-    },
-    {
-      type: 'input',
-      message: 'What is the salary of the role?',
-      name: 'salary'
-    },
-    {
-      type: 'list',
-      message: 'Which department does the role belong to?',
-      name: 'department',
-      choices: [
-        'Sales',
-        'Accounting',
-        'Customer Service',
-        'Quality Assurance',
-        'Human Resources',
-        'Warehouse',
-        'Administration'
-      ]
-    },
-  ])
-  .then((answers) => {
-    console.log(answers);
-    const queryEmployee = "SELECT * FROM employee INNER JOIN role ON employee.role_id=role.id";
-    const queryRole = 'INSERT INTO role (title, salary, department_id) VALUES (?,?,?) '
-    if(!answers.role) {
-      console.log('Please enter the name of the role!')
-      promptMenu();
-    }
-    if(!answers.salary) {
-      console.log('Please enter the salary!')
-      promptMenu();
-
-    }
-    if(!answers.department) {
-      console.log('Please enter the name of the department!')
-      promptMenu();
-
-    }
-    if(answers.role && answers.salary && answers.department){
-      connection.query(queryRole, [answers.role, answers.salary, 1], (err, rows) => {
-        connection.query(queryRole)
-        
+  const newQuery = 'SELECT * FROM department'
+  connection.query(newQuery, (err, rows) => {
+    if(err) console.log(err)
+    let departments = rows
+    let departmentChoices = departments.map(({id, name}) => ({
+      name: name,
+      value: id
+    }))
+    inquirer.prompt([
+      {
+        type: 'input',
+        message: 'What is the name of the role?',
+        name: 'role'
+      },
+      {
+        type: 'input',
+        message: 'What is the salary of the role?',
+        name: 'salary'
+      },
+      {
+        type: 'list',
+        message: 'Which department does the role belong to?',
+        name: 'department',
+        choices: departmentChoices
+      },
+    ])
+    .then((answers) => {
+  
+      const queryRole = 'INSERT INTO role (title, salary, department_id) VALUES (?,?,?) '
+      const params = [answers.role, answers.salary, answers.department]
+      connection.query(queryRole, params, (err, rows) => {
+        if(err) console.log(err)
+        connection.query("SELECT * FROM role", (err, rows) => {
+          console.table(rows)
+          promptMenu()
+        })
        
-        if(err) {
-          console.log(err)
-        }
-          
-        console.table(rows)
-
-        promptMenu();
       })
-    }
-  })
+  
+    })
+  }) 
+  
 }
 
 function addEmployee(){
@@ -236,7 +220,8 @@ function addEmployee(){
   ])
   .then((answers) => {
    
-    const queryEmployee = "INSERT INTO employee (first_name, last_name, role_id ) VALUES (?,?,?)"
+    const queryEmployee = "INSERT INTO employee (first_name, last_name, role_id) VALUES (?,?,?)"
+    const query = "SELECT * FROM employee INNER JOIN role ON employee.role_id=role.id"
 
     if(!answers.first_name) {
       console.log('Please enter employees first name!')
@@ -249,16 +234,15 @@ function addEmployee(){
     }
     if(answers.firstName && answers.lastName && answers.role){
       connection.query(queryEmployee, [answers.firstName, answers.lastName, 1], (err, rows) => {
-        connection.query(queryEmployee)
-        
-       
         if(err) {
           console.log(err)
+        }else {
+          connection.query(query, (err, rows) => {
+            console.table(rows)
+            promptMenu();
+            
+          })
         }
-          
-        console.table(rows)
-
-        promptMenu();
       })
     }
   })
