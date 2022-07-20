@@ -181,13 +181,15 @@ function addRole() {
     }
     if(answers.role && answers.salary && answers.department){
       connection.query(queryRole, [answers.role, answers.salary, 1], (err, rows) => {
-        connection.query
+        connection.query(queryRole)
+        
        
         if(err) {
           console.log(err)
         }
           
-        
+        console.table(rows)
+
         promptMenu();
       })
     }
