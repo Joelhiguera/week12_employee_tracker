@@ -162,31 +162,40 @@ function addRole() {
     },
   ])
   .then((answers) => {
-    console.log(answers.role);
-    console.log(answers.salary);
-    console.log(answers.department);
-    const queryTitle = 'INSERT INTO role (title) VALUES (?) ';
-    const querySalary = 'INSERT INTO role (salary) VALUES (?) ';
-    const queryDepartment = 'INSERT INTO role (manager_id) VALUES (?) ';
+    console.log(answers);
     const queryEmployee = "SELECT * FROM employee INNER JOIN role ON employee.role_id=role.id";
-    if(!answers.role == null){
-      connection.query(queryTitle, answers.role)
-    }else console.log('Please enter in the name of the role!')
-     if(!answers.salary == null) {
-      connection.query(querySalary, answers.salary, (err, rows) => {
+    const queryRole = 'INSERT INTO role (title, salary, department_id) VALUES (?,?,?) '
+    if(!answers.role) {
+      console.log('Please enter the name of the role!')
+      promptMenu();
+    }
+    if(!answers.salary) {
+      console.log('Please enter the salary!')
+      promptMenu();
+
+    }
+    if(!answers.department) {
+      console.log('Please enter the name of the department!')
+      promptMenu();
+
+    }
+    if(answers.role && answers.salary && answers.department){
+      connection.query(queryRole, [answers.role, answers.salary, 1], (err, rows) => {
+        connection.query
+       
         if(err) {
           console.log(err)
-        }else if(answers.salar == null) {
-          console.log('Please enter')
         }
+          
+        
+        promptMenu();
       })
     }
-    promptMenu();
   })
 }
 
 
-
+//query to get names in role and have them = to id that way you can match them and display the name
 
 
 //query to look for all employees then show it
