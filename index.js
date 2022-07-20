@@ -199,6 +199,43 @@ function addRole() {
   })
 }
 
+function addEmployee(){
+  inquirer.prompt([
+    {
+      type: 'input',
+      message: 'What is the employees first name?',
+      name: 'firstName'
+    },
+    {
+      type: 'input',
+      message: 'What is the employees last name?',
+      name: 'lastName'
+    },
+    {
+      type: 'list',
+      message: 'What is the employees role?',
+      name: 'role',
+      choices: [
+        'Branch Manager',
+        'Head of Human Resources',
+        'Sales Representative',
+        'Accountant',
+        'Head of Accounting',
+        'Supplier Relations',
+        'Warehouse Associate',
+        'Warehouse Foreman',
+        'VP of North East Sales',
+        'Customer Service Representative',
+        'Quality Assurance Representative',
+        'Receptionist',
+        'Administrative Assistant',
+        'Cheif Financial Officer',
+        'Assitant to the Regional Manager'
+      ]
+    },
+  ])
+}
+
 
 //query to get names in role and have them = to id that way you can match them and display the name
 
