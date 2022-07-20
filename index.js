@@ -69,6 +69,9 @@ inquirer.prompt([
       case "Add A Role":
         addRole()
         break;
+      case "Add An Employee":
+        addEmployee()
+        break;
         default: process.exit()
       
      }
