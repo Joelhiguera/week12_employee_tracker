@@ -2,6 +2,7 @@ const inquirer = require("inquirer");
 require('console.table');
 const mysql = require('mysql2');
 var figlet = require('figlet');
+const { listenerCount } = require("mysql2/typings/mysql/lib/Connection");
 
 
 
@@ -71,6 +72,9 @@ inquirer.prompt([
         break;
       case "Add An Employee":
         addEmployee()
+        break;
+      case "Update Employee Role":
+        updateEmployeeRole()
         break;
       
         default: process.exit()
@@ -245,6 +249,57 @@ function addEmployee(){
         }
       })
     }
+  })
+}
+
+function updateEmployeeRole() {
+  const query = "SELECT * FROM employee"
+  connection.query(query, (err, rows) => {
+    if(err) console.log(err)
+    let employees = rows
+    let employeeChoice = employees.map(({id, first_name, last_name}) => ({
+      name: `${first_name} ${last_name}`,
+      value: id
+    }))
+    inquirer.prompt([
+      {
+        type: 'list',
+        message: 'Which employee would you like to update?',
+        name: 'employeeId',
+        choices: employeeChoice
+      }
+    ])
+    .then((answers) => {
+      let employeeId = answers.employeeId
+      const query = "SELECT * FROM role"
+      connection.query(query, (err, rows) => {
+        if(err) console.log(err)
+        let roleChoices = rows.map(({id, title}) => ({
+          value: id,
+          name: `${title}`
+        }))
+        updateRole(employeeId, roleChoices)
+      })
+    })
+  })
+
+}
+
+function updateRole(employeeId, roleChoices) {
+  inquirer.prompt([
+    {
+      type: 'list',
+      message: 'What is the updated role?',
+      name: 'role',
+      choices: roleChoices
+    }
+  ]).then((answers) => {
+    const query = 'UPDATE employee SET role_id = ? WHERE id = ?'
+    const params = [answers.role, employeeId]
+    connection.query(query, params, (err, rows) => {
+      if(err) console.log(err)
+      viewAllEmployees();
+    })
   })
 }
 
