@@ -188,68 +188,54 @@ function addRole() {
 }
 
 function addEmployee(){
-  inquirer.prompt([
-    {
-      type: 'input',
-      message: 'What is the employees first name?',
-      name: 'firstName'
-    },
-    {
-      type: 'input',
-      message: 'What is the employees last name?',
-      name: 'lastName'
-    },
-    {
-      type: 'list',
-      message: 'What is the employees role?',
-      name: 'role',
-      choices: [
-        'Branch Manager',
-        'Head of Human Resources',
-        'Sales Representative',
-        'Accountant',
-        'Head of Accounting',
-        'Supplier Relations',
-        'Warehouse Associate',
-        'Warehouse Foreman',
-        'VP of North East Sales',
-        'Customer Service Representative',
-        'Quality Assurance Representative',
-        'Receptionist',
-        'Administrative Assistant',
-        'Cheif Financial Officer',
-        'Assitant to the Regional Manager'
-      ]
-    },
-  ])
-  .then((answers) => {
-   
-    const queryEmployee = "INSERT INTO employee (first_name, last_name, role_id) VALUES (?,?,?)"
-    const query = "SELECT * FROM employee INNER JOIN role ON employee.role_id=role.id"
+  const query = 'SELECT * FROM role'
+  connection.query(query, (err, rows) => {
+    if(err) console.log(err)
+    let role = rows
+    let roleChoices = role.map(({id, title}) => ({
+      name: title,
+      value: id
+    }))
+    let managerChoice = role.map(({manager_id, first_name, last_name}) => ({
+      name: `${first_name} ${last_name}`,
+      value: manager_id
+    }))
+    inquirer.prompt([
+      {
+        type: 'input',
+        message: 'What is the employees first name?',
+        name: 'firstName'
+      },
+      {
+        type: 'input',
+        message: 'What is the employees last name?',
+        name: 'lastName'
+      },
+      {
+        type: 'list',
+        message: 'What is the employees role?',
+        name: 'role',
+        choices: roleChoices
+      },
+      {
+        type: 'list',
+        message: 'Who is the eomplyees manager?',
+        name: 'manager',
+        choices: managerChoice
 
-    if(!answers.first_name) {
-      console.log('Please enter employees first name!')
-      promptMenu();
-    }
-    if(!answers.last_name) {
-      console.log('Please enter the employees last name!')
-      promptMenu();
-
-    }
-    if(answers.firstName && answers.lastName && answers.role){
-      connection.query(queryEmployee, [answers.firstName, answers.lastName, 1], (err, rows) => {
-        if(err) {
-          console.log(err)
-        }else {
-          connection.query(query, (err, rows) => {
-            console.table(rows)
-            promptMenu();
-            
-          })
-        }
+      }
+    ])
+    .then((answers) => {
+     
+      const queryEmployee = "INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)"
+      const params = [answers.firstName, answers.lastName, answers.role, answers.manager]
+      connection.query(queryEmployee, params, (err, rows) => {
+        if(err) console.log(err)
+        viewAllEmployees()
       })
-    }
+    })
   })
+  
 }
 
 function updateEmployeeRole() {
