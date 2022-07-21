@@ -188,13 +188,13 @@ function addRole() {
 }
 
 function addEmployee(){
-  const query = 'SELECT * FROM role'
+  const query = 'SELECT * FROM employee, role'
   connection.query(query, (err, rows) => {
     if(err) console.log(err)
     let role = rows
     let roleChoices = role.map(({id, title}) => ({
-      name: title,
-      value: id
+      value: id,
+      name: title
     }))
     let managerChoice = role.map(({manager_id, first_name, last_name}) => ({
       name: `${first_name} ${last_name}`,
