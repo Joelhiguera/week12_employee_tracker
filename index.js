@@ -47,6 +47,7 @@ inquirer.prompt([
       'Add An Employee',
       'Update Employee Role',
       'Delete Employee',
+      'Delete Department',
       'Quit'
     ]
 
@@ -79,6 +80,9 @@ inquirer.prompt([
         break;
       case "Delete Employee":
         deleteEmployee()
+        break;
+      case "Delete Department":
+        deleteDepartment()
         break;
       
         default: process.exit()
