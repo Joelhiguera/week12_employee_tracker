@@ -322,6 +322,33 @@ function deleteEmployee() {
   })
 }
 
+function deleteDepartment() {
+  const query = "SELECT * FROM department"
+  connection.query(query, (err, rows) => {
+    if(err) console.log(err)
+    let departments = rows
+    let departmentChoice = departments.map(({id, name}) => ({
+      name: name,
+      value: id
+    }))
+    inquirer.prompt([
+      {
+        type: 'list',
+        message: 'Which department would you like to delete?',
+        name: 'deleteDepartment',
+        choices: departmentChoice
+      }
+    ])
+    .then((answers) => {
+      const deleteQuery = "DELETE FROM department WHERE id= (?)"
+      connection.query = (deleteQuery, answers.departmentChoice, (err, rows) => {
+        if(err) console.log(err)
+        viewDepartments()
+      })
+    })
+  })
+}
+
 
 //query to get names in role and have them = to id that way you can match them and display the name
 
