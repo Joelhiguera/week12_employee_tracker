@@ -289,6 +289,34 @@ function updateRole(employeeId, roleChoices) {
   })
 }
 
+function deleteEmployee() {
+  const query = "SELECT * FROM employee"
+  connection.query(query, (err, rows) => {
+    if(err) console.log(err)
+    let employees = rows
+    let employeeChoice = employees.map(({id, first_name, last_name}) => ({
+      name: `${first_name} ${last_name}`,
+      value: id
+    }))
+    inquirer.prompt([
+      {
+        type: 'list',
+        message: 'Which employee would you like to delete?',
+        name: 'deletedEmployee',
+        choices: employeeChoice
+        
+      }
+    ])
+    .then((answers) => {
+      const deleteQuery = "DELETE FROM employee WHERE ?"
+      connection.query(deleteQuery, answers.deleteEmployee, (err, rows) => {
+        if(err) console.log(err)
+        viewAllEmployees()
+      })
+    })
+  })
+}
+
 
 //query to get names in role and have them = to id that way you can match them and display the name
 
