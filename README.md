@@ -10,5 +10,5 @@
   ## Links to github repository and video demonstration link!
   Github URL: https://github.com/Joelhiguera/week12_employee_tracker
 
-  Video Link: 
+  Video Link: https://drive.google.com/file/d/1_rY5C2pbh4syoiPxH4uG57VJvuLnWas1/view
   
