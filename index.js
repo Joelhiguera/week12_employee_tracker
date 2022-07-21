@@ -312,8 +312,9 @@ function deleteEmployee() {
       }
     ])
     .then((answers) => {
-      const deleteQuery = "DELETE FROM employee WHERE ?"
-      connection.query(deleteQuery, answers.deleteEmployee, (err, rows) => {
+      const deleteQuery = "DELETE FROM employee WHERE id= (?)"
+      console.log(answers.deletedEmployee)
+      connection.query(deleteQuery, answers.deletedEmployee, (err, rows) => {
         if(err) console.log(err)
         viewAllEmployees()
       })
