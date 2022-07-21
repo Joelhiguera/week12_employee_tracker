@@ -117,7 +117,7 @@ function viewAllRoles() {
 function viewAllEmployees() {
   // const alias = "SELECT manager_id, CONCAT_WS(', ', first_name, last_name) AS Manager FROM employee"
 
-  const query = "SELECT employee.id, first_name, last_name, title, salary, CONCAT_WS(', ', last_name, first_name) `Manager` FROM employee INNER JOIN role ON employee.role_id=role.id"
+  const query = "SELECT employee.id, first_name, last_name, title, salary, CONCAT_WS(', ', last_name, first_name) `Manager` FROM employee INNER JOIN role ON employee.role_id=role.id ORDER BY employee.id ASC"
 
   // "SELECT * FROM employee INNER JOIN role ON employee.role_id=role.id"
 
