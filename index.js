@@ -115,7 +115,13 @@ function viewAllRoles() {
 }
 
 function viewAllEmployees() {
-  const query = "SELECT * FROM employee INNER JOIN role ON employee.role_id=role.id"
+  // const alias = "SELECT manager_id, CONCAT_WS(', ', first_name, last_name) AS Manager FROM employee"
+
+  const query = "SELECT employee.id, first_name, last_name, title, salary, CONCAT_WS(', ', last_name, first_name) `Manager` FROM employee INNER JOIN role ON employee.role_id=role.id"
+
+  // "SELECT * FROM employee INNER JOIN role ON employee.role_id=role.id"
+
+
   connection.query(query, (err, rows) => {
     if(err) console.log(err)
     console.table(rows)
@@ -316,8 +322,7 @@ function deleteEmployee() {
       }
     ])
     .then((answers) => {
-      const deleteQuery = "DELETE FROM employee WHERE id= (?)"
-      console.log(answers.deletedEmployee)
+      const deleteQuery =  "DELETE FROM employee WHERE id= (?)"
       connection.query(deleteQuery, answers.deletedEmployee, (err, rows) => {
         if(err) console.log(err)
         viewAllEmployees()
@@ -344,14 +349,19 @@ function deleteDepartment() {
       }
     ])
     .then((answers) => {
+      console.log(answers.deleteDepartment)
+      // const foreignKeyCheck = "SET foreign_key_checks = 0"
       const deleteQuery = "DELETE FROM department WHERE id= (?)"
-      connection.query = (deleteQuery, answers.departmentChoice, (err, rows) => {
+      // const addForeignKey = "SET foreign_key_checks = 0"
+      connection.query(deleteQuery, answers.deleteDepartment, (err, rows) => {
         if(err) console.log(err)
         viewDepartments()
       })
     })
   })
 }
+
+
 
 
 //query to get names in role and have them = to id that way you can match them and display the name
